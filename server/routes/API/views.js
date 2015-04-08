@@ -12,7 +12,6 @@ module.exports.compileViews = function(){
         fn_index = jade.compile(data, {
             filename: './views/html-head/layout.jade'
         });
-        console.log("fez compile Index");
 
         module.exports.view_index   = fn_index;
     });

@@ -8,13 +8,13 @@ var logger 					= require('morgan');
 var cookieParser 		= require('cookie-parser');
 var bodyParser 			= require('body-parser');
 var session         = require('express-session');
-
-
-var compiler        = require('./routes/API/views.js');
-
 var mongo 					= require('mongodb');
 var monk 						= require('monk');
 var db 							= monk('localhost:27017/educationApp');
+
+var compiler        = require('./routes/API/views.js');
+
+
 
 process.env.TMPDIR  = __dirname + '/uploads';
 
@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser('conference'));
 app.use(session({
-        secret              : 'sciencememo session secret',
+        secret              : ''
         name                : 'session',
         resave              : true,
         saveUninitialized   : true
@@ -69,27 +69,5 @@ http.createServer(app).listen(app.get('port'), function ()
     compiler.compileViews(); //compile views
 
 
-
-});
-
-
-
-
-
-
-
-
-
-
-
-app.get('/test', function(req,res){
-	console.log("ola")
-		var collection = req.db.get("test");
-
-		collection.insert({ name: 'Ana', bigdata: {} });
-
-		collection.find({},{},function(e,docs){
-        console.log(docs);
-    });
 
 });

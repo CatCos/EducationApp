@@ -1,0 +1,163 @@
+extends layout
+
+block content
+	include ../navbar/navbar
+	div(class="container")
+			div(class="row")
+				h2 Percurso Académico
+					span(style="font-size: 15px;") 
+						button(type="button",class="pull-right btn btn-success btn-xs", data-toggle="modal", data-target="#myModal", id="add-new")
+							i(class="fa fa-plus")
+			div(class="row")
+				div(class="col-lg-8 col-sm-8")
+				div(class="col-lg-4 col-sm-4")
+					form(role="search")
+						div(class="form-group")
+							input(type="search", class="form-control", placeholder="Search", id="input-search")
+							
+			div(class="row")
+				table(class="table table-striped", id="table-find")
+					thead
+						th Ano
+						th Código
+						th Disciplina						
+						th Créditos
+						th Nota
+						th
+						th
+					tbody
+						each row in rows
+							tr 
+								td #{row.ano}
+								td #{row.codigo}
+								td #{row.disciplina}
+								td #{row.creditos}
+								td #{row.nota}
+								td
+									a(href="/remove?s=" + row.codigo)
+										i(class="fa fa-trash")
+								td
+									a(href="#", class="edit", data-toggle="modal", data-target="#myModalUpdate")
+										i(class="fa fa-pencil")
+						tr
+							td
+							td
+							td
+							td #{creditos}
+							td #{media}
+							td
+							td
+				br
+				br
+					
+					
+				div(class="modal fade", id="myModal", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+					div(class="modal-dialog")
+						div(class="modal-content")
+							div(class="modal-header")
+								button(type="button", class="close", data-dismiss="modal", aria-label="Close")
+									span(aria-hidden="true") &times;
+								h4(class="modal-title", id="myModalLabel") Adicionar Novo
+							div(class="modal-body")
+								form(class="form", role="form", method="post", action="insert?")
+									div(class="form-group" id="div-codigo")
+										label(for="codigo") Código                                          
+										input(type="text", class="form-control",  id="codigo", name="codigo", placeholder="Código")
+									div(class="form-group" id="div-disciplina")
+										label(for="disciplina") Disciplina                                          
+										input(type="text", class="form-control",  id="disciplina", name="disciplina", placeholder="Disciplina")
+									div(class="form-group" id="div-creditos")
+										label(for="creditos") Créditos                                          
+										input(type="text", class="form-control",  id="creditos", name="creditos", placeholder="Créditos")
+									div(class="form-group" id="div-nota")
+										label(for="nota") Nota                                          
+										input(type="text", class="form-control",  id="nota", name="nota", placeholder="Nota")
+									div(class="form-group" id="div-ano")
+										label(for="ano") Ano                                          
+										select(class="form-control", id="ano",name="ano")					
+											option 1
+											option 2
+											option 3
+											option 4
+											option 5									
+									div(class="modal-footer")
+											button(type="button", class="btn btn-default", data-dismiss="modal") Fechar
+											button(type="submit", class="btn btn-primary") Salvar
+											
+				div(class="modal fade", id="myModalUpdate", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+					div(class="modal-dialog")
+						div(class="modal-content")
+							div(class="modal-header")
+								button(type="button", class="close", data-dismiss="modal", aria-label="Close")
+									span(aria-hidden="true") &times;
+								h4(class="modal-title", id="myModalLabel") Editar
+							div(class="modal-body")
+								form(class="form", role="form", method="post", action="update?", id="form-update")
+									div(class="form-group" id="div-codigo-update")
+										label(for="codigo-update") Código                                          
+										input(type="text", class="form-control",  id="codigo-update", name="codigo", placeholder="Código")
+									div(class="form-group" id="div-disciplina-update")
+										label(for="disciplina-update") Disciplina                                          
+										input(type="text", class="form-control",  id="disciplina-update", name="disciplina", placeholder="Disciplina")
+									div(class="form-group" id="div-creditos-update")
+										label(for="creditos-update") Créditos                                          
+										input(type="text", class="form-control",  id="creditos-update", name="creditos", placeholder="Créditos")
+									div(class="form-group" id="div-nota-update")
+										label(for="nota-update") Nota                                          
+										input(type="text", class="form-control",  id="nota-update", name="nota", placeholder="Nota")
+									div(class="form-group" id="div-ano-update")
+										label(for="ano-update") Ano                                          
+										select(class="form-control", id="ano-update",name="ano")					
+											option 1
+											option 2
+											option 3
+											option 4
+											option 5									
+									div(class="modal-footer")
+											button(type="button", class="btn btn-default", data-dismiss="modal") Fechar
+											button(type="submit", class="btn btn-primary") Salvar
+			
+			script(src="js/Filter/jquery.filtertable.js")
+			script.
+				$(document).ready(function(){
+					$('table').filterTable();
+					 $(".edit").click(function(){ // Click to only happen on announce links
+						 var $row = $(this).closest("tr");
+						 var $tds = $row.find("td");
+						 
+						 var $i = 1;
+						 var code;
+						 $.each($tds, function() {                
+								if($i == 1)
+								{
+									$("#ano-update").val($(this).text());
+								}
+								else if($i == 2)
+								{
+									code = $(this).text();
+									$("#codigo-update").val($(this).text());
+								}
+								else if($i == 3)
+								{
+									$("#disciplina-update").val($(this).text());
+								}
+								else if($i == 4)
+								{
+									$("#creditos-update").val($(this).text());
+								}
+								else if($i == 5)
+								{
+									$("#nota-update").val($(this).text());
+								}
+								
+								$i = $i + 1;
+							
+							 $('#form-update').attr('action', 'update?s=' + code )
+							});
+
+					 });
+				});
+
+				
+			
+								
